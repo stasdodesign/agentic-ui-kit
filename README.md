@@ -1,84 +1,89 @@
+> 🇷🇺 **Russian version is available [here](./README.ru.md).**
+
+---
+
 # 🤖 Agentic UX: 12-State Framework for AI Agents. Design System & Interactive Playground
 
-> **Enterprise-стандарт пользовательского интерфейса для автономных AI-агентов (Next.js 15, React 19, TypeScript, Tailwind CSS, Motion).**  
-> 🌐 **Живая демонстрация (Live Demo на Vercel):** [https://agentic-ui-kit.vercel.app/](https://agentic-ui-kit.vercel.app/)  
-> Автор концепции и дизайна: **Станислав Довиденко (Stanislav Dovidenko)** — *Product Designer* 
-> 📩 **Связаться в Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)  
-> ✉️ **Написать на почту:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)
----
-
-## 📌 О проекте
-
-При взаимодействии с автономными AI-агентами ключевая проблема традиционного UX — **«когнитивный разрыв» (Cognitive Visibility Gap)**: пользователь не понимает, завис ли агент, какие системные команды он вызывает в фоне и какие необратимые действия готовится совершить.
-
-**Agentic UX** решает эту проблему через строгую **конечную машину состояний (Finite State Machine, FSM)** из 12 канонических фаз с прозрачной цепочкой рассуждений (Chain of Thought), инспекцией MCP/API-вызовов и обязательным Human-in-the-Loop барьером для критических операций.
+> **Enterprise-grade UI standard for autonomous AI agents (Next.js 15, React 19, TypeScript, Tailwind CSS, Motion).**  
+> 🌐 **Live Demo (Vercel):** [https://agentic-ui-kit.vercel.app/](https://agentic-ui-kit.vercel.app/)  
+> Concept & Design by: **Stanislav Dovidenko** — *Product Designer*  
+> 📩 **Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)  
+> ✉️ **Email:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)  
 
 ---
 
-## 🌟 Ключевые возможности
+## 📌 About the Project
 
-1. **12 канонических состояний агента:**
-   - Каждое состояние имеет выделенный цвет, индикатор, иконку, уровень прозрачности и семантическую цель.
-2. **Interactive Studio:**
-   - 4 реалистичных enterprise-сценария (миграция PostgreSQL, оформление возврата клиенту, масштабирование Kubernetes-подов, юридический анализ договоров).
-   - Интерактивный эмулятор с возможностью шагать по FSM вручную или запускать авто-симуляцию рабочего процесса.
-   - Редактор входных данных (JSON Payload Editor) в реальном времени с валидацией.
-   - Журнал выполненных действий (Action History Log) с фиксацией переходов.
-   - Готовый генератор JSX-кода для интеграции в сторонние проекты.
-3. **12-State Matrix:**
-   - Галерея одновременного просмотра всех 12 состояний для дизайн-аудита и проверки согласованности типографики и цветовой палитры.
-4. **Architecture & Rules:**
-   - Подробная интерактивная документация: 4 столпа доверия к AI, матрица допустимых переходов и правила безопасного внедрения.
-5. **Адаптивность и доступность:**
-   - 100% адаптивный дизайн для мобильных устройств (гамбургер-меню, защита от переполнения длинных URL с `break-all`, перенос тегов).
-   - Поддержка темной и светлой тем с соблюдением контрастности **WCAG AA**.
+When users interact with autonomous AI agents, the primary UX challenge is the **Cognitive Visibility Gap**: users cannot tell whether an agent is hanging, what backend commands or MCP tools it is calling, or what irreversible mutations it is about to execute.
+
+**Agentic UX** solves this by establishing a strict **12-State Finite State Machine (FSM)**. It provides real-time visibility into the agent's Chain of Thought (CoT), transparent parameter inspection for tool calls, and an uncompromising **Human-in-the-Loop (HITL) safety gate** for high-stakes actions.
 
 ---
 
-## 🗂️ 12 канонических состояний FSM
+## 🗂️ The 12 Canonical States of Autonomous Agents
 
-| # | Состояние (`AgentState`) | Фаза | UX-цель и назначение |
-|---|--------------------------|------|----------------------|
-| 1 | `idle` | `Input` | Агент готов к приему задачи, отображает подсказки и контекст. |
-| 2 | `listening` | `Input` | Фиксация входящего запроса (голос / текст) с визуализацией активности. |
-| 3 | `thinking` | `Cognitive` | Пошаговый показ цепочки рассуждений (Chain-of-Thought) без псевдо-ожидания. |
-| 4 | `planning` | `Cognitive` | Декомпозиция сложной цели на этапы с отображением зависимостей. |
-| 5 | `tool-calling` | `Execution` | Прозрачный вызов внешних инструментов (MCP/REST/SQL) с параметрами и временем. |
-| 6 | `waiting` | `Execution` | Ожидание внешней асинхронной блокировки или распределенной транзакции. |
-| 7 | `clarifying` | `Interaction`| Разрешение неоднозначностей: агент запрашивает выбор у пользователя. |
-| 8 | `processing` | `Execution` | Агрегация, валидация и парсинг результатов вызова инструментов. |
-| 9 | `asking-confirmation` | `Interaction`| **Human-in-the-Loop Guardrail:** подтверждение рискованных/необратимых мутаций. |
-| 10| `executing` | `Execution` | Непосредственная фиксация транзакции и применение изменений. |
-| 11| `completed` | `Resolution` | Успешное завершение задачи с кратким отчетом и окном для отмены (Undo). |
-| 12| `failed` | `Resolution` | Понятная диагностика сбоя с кнопками безопасного повтора или отката. |
+The state machine is organized into 4 logical phases: **Intake**, **Cognition**, **Execution**, and **Resolution**.
+
+| # | State (`AgentState`) | Phase | UX Purpose & Expected Behavior |
+|---|----------------------|-------|--------------------------------|
+| 1 | `idle` | `Intake` | Passive readiness: agent displays suggestions, context, and trigger hints. |
+| 2 | `listening` | `Intake` | Active streaming input (audio/text) with waveform micro-animations. |
+| 3 | `thinking` | `Cognition` | Live inference indicator; shows intent without fake loading delays. |
+| 4 | `planning` | `Cognition` | Multi-step task decomposition with dependency graph and timing estimates. |
+| 5 | `tool-calling` | `Execution` | Transparent inspection of external tool/MCP/API parameters and response payloads. |
+| 6 | `waiting` | `Execution` | Explicit backoff, advisory lock acquisition, or distributed sync delay. |
+| 7 | `clarifying` | `Cognition` | Ambiguity resolution: agent presents selectable chips or asks for user input. |
+| 8 | `processing` | `Execution` | In-flight mutation, data validation, and artifact aggregation. |
+| 9 | `asking-confirmation`| `Execution` | **Human-in-the-Loop Guardrail:** impact analysis, risk badge, and authorization gate. |
+| 10| `executing` | `Execution` | Atomic transaction commit and database/webhook write state. |
+| 11| `completed` | `Resolution` | Objective achieved: latency, token metrics, summary, and **atomic Undo**. |
+| 12| `failed` | `Resolution` | Diagnostic error classification, rollback status, and one-click recovery. |
 
 ---
 
-## 🚀 Быстрый старт
+## 🌟 Key Features
 
-### Требования
-- **Node.js**: `v20.x` или новее
-- **npm** / **yarn** / **pnpm**
+- **12 Canonical State Components:** Every phase has dedicated color coding, status badges, iconography, and semantic layouts.
+- **Interactive Sandbox:** 4 realistic enterprise scenarios:
+  1. *PostgreSQL Migration* — high-risk table locking and DDL schema mutation.
+  2. *Customer Dispute & Refund* — financial adjustment with instant reversibility.
+  3. *Kubernetes Pod Autoscaling* — infrastructure cluster selection and capacity checks.
+  4. *Legal Contract Analysis* — document intelligence and risk clause flagging.
+- **Auto-Run Workflow Simulator:** Automated playback through state sequences at adjustable speeds.
+- **Live JSON Payload Editor:** Edit execution parameters in real time to test adaptive UI behavior.
+- **Action History Audit Log:** Real-time chronological audit trail of all dispatched agent actions.
+- **12-State Matrix Gallery:** Side-by-side comparison view of all 12 cards for design reviews.
+- **Zero Horizontal Overflow & Break-All Discipline:** Monospaced identifiers, DB cluster paths, and API endpoints wrap cleanly on mobile screens (320px+).
+- **WCAG AA Compliance:** High-contrast light and dark themes with accessible color palettes.
 
-### Установка и запуск
+---
 
-1. **Клонируйте репозиторий или откройте папку проекта:**
+## 🚀 Quick Start
+
+### Prerequisites
+- **Node.js**: `v20.x` or later
+- **npm**, **yarn**, or **pnpm**
+
+### Installation & Local Run
+
+1. **Clone the repository:**
    ```bash
-   cd ai-studio-applet
+   git clone https://github.com/your-username/agentic-ui-kit.git
+   cd agentic-ui-kit
    ```
 
-2. **Установите зависимости:**
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Запустите локальный сервер разработки:**
+3. **Start the local development server:**
    ```bash
    npm run dev
    ```
-   Приложение откроется по адресу `http://localhost:3000`.
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-4. **Проверка линтером и сборка:**
+4. **Lint and build:**
    ```bash
    npm run lint
    npm run build
@@ -86,36 +91,38 @@
 
 ---
 
-## 🛠️ Структура проекта
+## 🛠️ Project Structure
 
 ```text
 ├── app/
-│   ├── layout.tsx                # Корневой лэйаут с метаданными и шрифтами
-│   ├── page.tsx                  # Главная страница (подключает Playground)
-│   └── globals.css               # Стили Tailwind CSS v4
+│   ├── layout.tsx                # Root layout with metadata and fonts
+│   ├── page.tsx                  # Application entry point
+│   └── globals.css               # Tailwind CSS v4 styles & dark mode variant
 ├── components/
-│   ├── Playground.tsx            # Интерактивная студия, матрица и документация
-│   ├── mockData.ts               # Предустановленные enterprise-сценарии
+│   ├── Playground.tsx            # Main interactive studio, matrix & documentation
+│   ├── mockData.ts               # Enterprise scenario definitions
 │   └── agentic-ux/
-│       ├── AgentStateRenderer.tsx    # Главный контроллер рендеринга состояния
-│       ├── AgentStatusBadge.tsx      # Семантический бейдж статуса с пинг-анимацией
-│       ├── ReasoningChain.tsx        # Компонент цепочки рассуждений (CoT)
-│       ├── PlanList.tsx              # Интерактивный список шагов плана
-│       ├── ToolCallWidget.tsx        # Инспектор параметров и вывода MCP-инструментов
-│       ├── ApprovalCard.tsx          # Карточка Human-in-the-Loop подтверждения
-│       ├── ClarificationSelector.tsx # Селектор уточнения неоднозначностей
-│       ├── CompletionSummary.tsx     # Итоговый отчет с кнопкой отмены (Undo)
-│       └── FailureCard.tsx           # Диагностическая карточка ошибки
+│       ├── AgentStateRenderer.tsx    # State coordinator with AnimatePresence
+│       ├── AgentStatusBadge.tsx      # Pulse badge with phase-specific styles
+│       ├── ApprovalCard.tsx          # Human-in-the-Loop authorization card
+│       ├── ToolCallWidget.tsx        # MCP/API inspector with JSON copy & tabs
+│       ├── ReasoningAccordion.tsx    # Step-by-step reasoning plan viewer
+│       ├── ClarificationPanel.tsx    # Ambiguity selector with quick options
+│       ├── ListeningVisualizer.tsx   # Voice / streaming audio waveform
+│       ├── CompletedSummary.tsx      # Completion audit card with Undo action
+│       └── ErrorRecoveryPanel.tsx    # Diagnostic error panel with retry/abort
 ├── types/
-│   └── index.ts                  # Строгая типизация состояний, полезных данных и FSM
+│   └── index.ts                  # TypeScript types for FSM states & payloads
+├── README.md                     # English documentation (this file)
+├── README.ru.md                  # Russian documentation
 └── package.json
 ```
 
 ---
 
-## 💻 Пример использования компонентов в вашем коде
+## 💻 Integration Example
 
-Вы можете легко использовать `AgentStateRenderer` в любом React / Next.js приложении:
+You can drop the `AgentStateRenderer` into any Next.js or React application:
 
 ```tsx
 'use client';
@@ -124,21 +131,21 @@ import React, { useState } from 'react';
 import { AgentStateRenderer } from '@/components/agentic-ux/AgentStateRenderer';
 import { AgentState, AgentAction } from '@/types';
 
-export function MyAgentWidget() {
+export function AgentWorkflowCard() {
   const [state, setState] = useState<AgentState>('asking-confirmation');
 
   const handleAction = (action: AgentAction) => {
     switch (action.type) {
       case 'APPROVE':
-        console.log('Пользователь подтвердил мутацию:', action.payload);
+        console.log('Action approved with payload:', action.payload);
         setState('executing');
         break;
       case 'REJECT':
-        console.log('Пользователь отклонил операцию');
+        console.log('Action rejected by user');
         setState('idle');
         break;
       case 'UNDO':
-        console.log('Откат выполнен');
+        console.log('Atomic undo triggered');
         setState('idle');
         break;
     }
@@ -153,14 +160,14 @@ export function MyAgentWidget() {
       showHeader={true}
       payload={{
         confirmation: {
-          actionTitle: 'Изменение схемы таблицы и удаление старого индекса',
+          actionTitle: 'Commit Schema Alteration & Drop Legacy Index',
           riskLevel: 'critical',
-          details: 'Операция заблокирует таблицу на ~350мс и затронет 3 412 записей.',
+          details: 'Operation will acquire an exclusive table lock on billing_subscriptions for ~350ms.',
           reversible: false,
           affectedResource: 'aws-rds://production-primary.cluster/billing_subscriptions',
           consequences: [
-            'Блокировка таблицы на запись ~350мс',
-            'Удаление устаревшего индекса idx_subs_cycle_v1',
+            'Exclusive table lock for ~350ms',
+            'Permanent drop of index idx_subs_cycle_v1',
           ],
           payloadToExecute: { table: 'billing_subscriptions', dryRun: false },
         },
@@ -172,56 +179,41 @@ export function MyAgentWidget() {
 
 ---
 
-## 📱 Руководство пользователя (Как пользоваться проектом)
+## 📱 How to Use the Interactive Playground
 
-1. **Выбор сценария (Scenario Sandbox):**
-   - В верхней панели Interactive Studio выберите один из 4 сценариев:
-     - *PostgreSQL Migration* — сценарий с высоким риском и MCP-вызовами.
-     - *Customer Refund* — бизнес-логика с валидацией транзакций.
-     - *K8s Pod Scaling* — инфраструктурный сценарий с уточнениями кластеров.
-     - *Legal Contract Analysis* — когнитивный анализ договоров.
-
-2. **Ручное переключение состояний:**
-   - Нажимайте на любое состояние в горизонтальной цепочке состояний (*idle*, *thinking*, *planning*, *tool-calling*, *asking-confirmation* и т.д.), чтобы увидеть, как компонент визуализирует конкретный шаг.
-
-3. **Авто-симуляция (Auto-Run Workflow):**
-   - Нажмите кнопку **«Auto-Run Workflow»** в хедере или верхней панели. Система начнет автоматически проводить агента по цепочке от постановки задачи до финализации.
-
-4. **Интерактивные действия пользователя (Human-in-the-Loop):**
-   - На шаге `clarifying` кликните по одному из вариантов выбора.
-   - На шаге `asking-confirmation` нажмите **«Authorize & Commit»** или **«Reject & Abort»**, либо нажмите **«Edit Payload»** для правки параметров перед выполнением.
-   - На шаге `completed` доступен таймер отмены **«Undo Action»**.
-
-5. **Редактирование JSON в реальном времени:**
-   - В правой колонке в блоке **State Payload (JSON)** нажмите **«Edit JSON»**, измените текст или параметры и нажмите **«Apply Payload Changes»** — интерфейс обновится мгновенно.
-
-6. **Просмотр матрицы и документации:**
-   - Переключитесь на вкладку **«12-State Matrix»** для сравнения всех 12 карточек.
-   - Переключитесь на вкладку **«Architecture & Rules»** для изучения архитектурных стандартов и правил проектирования агентских систем.
+1. **Choose a Scenario:** Use the top bar in the Interactive Studio to switch between 4 enterprise scenarios.
+2. **Switch States:** Click on any step in the 12-state breadcrumb bar (`idle`, `thinking`, `planning`, `tool-calling`, `asking-confirmation`, etc.) to inspect its UI presentation.
+3. **Auto-Run Workflow:** Click **«Auto-Run Workflow»** in the header to simulate end-to-end execution.
+4. **Human-in-the-Loop Actions:**
+   - In `clarifying`: Click suggestion chips or provide manual guidance.
+   - In `asking-confirmation`: Test **«Authorize & Commit»**, **«Reject & Abort»**, or click **«Edit Payload»** to modify parameters prior to execution.
+   - In `completed`: Test the **«Undo Action»** timer window.
+5. **Live Payload Editing:** Use the right-hand **State Payload (JSON)** panel to modify live parameters and observe instant reactive UI updates.
+6. **12-State Matrix & Architecture:** Switch tabs to view the complete 12-card design audit matrix or read the 4 Pillars of Agentic Transparency.
 
 ---
 
-## 👤 Автор и контакты
+## 👤 Author & Contacts
 
-- **Станислав Довиденко (Stanislav Dovidenko)** — *Product Designer, Lead UX/UI Specialist for Agentic & Enterprise AI Systems*.
+- **Stanislav Dovidenko** — *Product Designer, Lead UX/UI Specialist for Agentic & Enterprise AI Systems*
 - **Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)
 - **Email:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)
-- **Живая демонстрация (Vercel):** [https://agentic-ui-kit.vercel.app/](https://agentic-ui-kit.vercel.app/)
-- **Профиль в приложении:** кликните на бейдж автора в футере или мобильном меню для просмотра подробного резюме и ключевых кейсов.
+- **Live Demo (Vercel):** [https://agentic-ui-kit.vercel.app/](https://agentic-ui-kit.vercel.app/)
+- **In-App Profile:** Click the author pill in the footer or mobile menu to view full background and portfolio cases.
 
 ---
 
-## 💼 Индивидуальный аудит и интеграция (CTA)
+## 💼 Custom Audit & Integration (CTA)
 
-> **Нужен индивидуальный UX-аудит или интеграция Agentic UX для вашего B2B AI-приложения? Свяжитесь со мной для 20-минутного асинхронного видеоразбора в Loom.**
+> **Need a custom Agentic UX audit or integration for your B2B AI app? Contact me for a 20-min async Loom review.**
 >
-> Разберём сценарии вашего AI-агента, цепочки рассуждений (CoT), контрольные точки подтверждений (Human-in-the-Loop) и поможем внедрить стандарт прозрачности, повышающий доверие и конверсию пользователей.
+> We will analyze your AI agent workflows, Chain of Thought (CoT) reasoning clarity, Human-in-the-Loop decision gates, and implement production-ready transparency standards that build user trust and reduce churn.
 >
-> 📩 **Связаться в Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)  
-> ✉️ **Написать на почту:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)
+> 📩 **Contact on Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)  
+> ✉️ **Send an Email:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)
 
 ---
 
-## 📄 Лицензия
+## 📄 License
 
-MIT License — свободное использование для коммерческих и образовательных проектов.
+MIT License — free for commercial and educational use.
