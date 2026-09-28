@@ -21,7 +21,11 @@ import {
   Database,
   ArrowRight,
   BookOpen,
+  X,
+  User,
+  Menu,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   AgentState,
   AgentStatePayload,
@@ -70,6 +74,23 @@ export const AgentPlayground: React.FC = () => {
 
   // Active View Tab: 'playground' | 'matrix' | 'fsm-docs'
   const [activeTab, setActiveTab] = useState<'playground' | 'matrix' | 'fsm-docs'>('playground');
+
+  // Author Profile Modal state & Mobile Navigation state
+  const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsAuthorModalOpen(false);
+        setIsMobileMenuOpen(false);
+      }
+    };
+    if (isAuthorModalOpen || isMobileMenuOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAuthorModalOpen, isMobileMenuOpen]);
 
   // Dark mode state with lazy initialization
   const [isDark, setIsDark] = useState<boolean>(() => {
@@ -312,8 +333,8 @@ export function MyAgentWidget() {
             </span>
           </div>
 
-          {/* Zone 2: Clean 3-4 nav links / segmented tabs */}
-          <nav className="flex items-center gap-1 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-xs">
+          {/* Zone 2: Clean 3-4 nav links / segmented tabs (desktop only) */}
+          <nav className="hidden md:flex items-center gap-1 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-xs">
             <button
               type="button"
               onClick={() => setActiveTab('playground')}
@@ -349,7 +370,7 @@ export function MyAgentWidget() {
             </button>
           </nav>
 
-          {/* Zone 3: Primary Actions (Theme Toggle & Auto-Run) */}
+          {/* Zone 3: Primary Actions (Theme Toggle, Desktop Auto-Run & Mobile Menu Button) */}
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -385,8 +406,129 @@ export function MyAgentWidget() {
                 </>
               )}
             </button>
+
+            {/* Mobile Hamburger Menu Toggle */}
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition cursor-pointer"
+              aria-label={isMobileMenuOpen ? 'Close mobile navigation menu' : 'Open mobile navigation menu'}
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Dropdown */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
+              className="md:hidden overflow-hidden border-t border-zinc-200 dark:border-zinc-800 mt-3 pt-3 pb-1 space-y-2 text-xs"
+            >
+              <div className="flex flex-col space-y-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('playground');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl font-medium transition text-left ${
+                    activeTab === 'playground'
+                      ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900'
+                      : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+                  }`}
+                >
+                  <span>Interactive Studio</span>
+                  {activeTab === 'playground' && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 dark:bg-indigo-600" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('matrix');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl font-medium transition text-left ${
+                    activeTab === 'matrix'
+                      ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900'
+                      : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+                  }`}
+                >
+                  <span>12-State Matrix</span>
+                  {activeTab === 'matrix' && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 dark:bg-indigo-600" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab('fsm-docs');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl font-medium transition text-left ${
+                    activeTab === 'fsm-docs'
+                      ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900'
+                      : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+                  }`}
+                >
+                  <span>Architecture & Rules</span>
+                  {activeTab === 'fsm-docs' && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 dark:bg-indigo-600" />
+                  )}
+                </button>
+              </div>
+
+              {/* Mobile Auto-Run Button & Author Profile Button */}
+              <div className="pt-2 border-t border-zinc-100 dark:border-zinc-900 flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    if (isSimulating) {
+                      setIsSimulating(false);
+                    } else {
+                      setActiveState('idle');
+                      setIsSimulating(true);
+                    }
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium text-xs shadow-xs"
+                >
+                  {isSimulating ? (
+                    <>
+                      <Pause className="w-3.5 h-3.5" />
+                      <span>Pause Simulator</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-3.5 h-3.5" />
+                      <span>Auto-Run Workflow</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsAuthorModalOpen(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium hover:border-cyan-600 hover:text-cyan-800 dark:hover:border-[#00F0FF]/60 dark:hover:text-[#00F0FF] transition-colors"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-600 dark:bg-[#00F0FF]" />
+                  <span>Author Profile (Stanislav Dovidenko)</span>
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* 2. MAIN WORKSPACE */}
@@ -862,9 +1004,20 @@ export function MyAgentWidget() {
 
       {/* 3. FOOTER */}
       <footer className="mt-12 border-t border-zinc-200 dark:border-zinc-800 py-6 text-center text-xs text-zinc-500 dark:text-zinc-500">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span>Agentic UX: 12-State Design System · Production Enterprise Standard</span>
-          <div className="flex items-center gap-4 text-zinc-500">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-3 w-full sm:w-auto text-center sm:text-left">
+            <span>Agentic UX: 12-State Design System · Production Enterprise Standard</span>
+            <button
+              type="button"
+              onClick={() => setIsAuthorModalOpen(true)}
+              className="mx-auto sm:mx-0 inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 hover:border-cyan-600 hover:text-cyan-800 dark:hover:border-[#00F0FF]/70 dark:hover:text-[#00F0FF] transition-all text-xs font-medium shadow-xs cursor-pointer group"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-600 dark:bg-[#00F0FF] group-hover:scale-125 transition-transform" />
+              <span className="font-semibold">Stanislav Dovidenko</span>
+              <span className="text-[10px] uppercase tracking-wider text-zinc-400 group-hover:text-cyan-700 dark:group-hover:text-[#00F0FF]/80">Product Designer</span>
+            </button>
+          </div>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 text-zinc-500">
             <span>TypeScript</span>
             <span aria-hidden="true">·</span>
             <span>Tailwind CSS</span>
@@ -875,6 +1028,143 @@ export function MyAgentWidget() {
           </div>
         </div>
       </footer>
+
+      {/* AUTHOR PROFILE MODAL */}
+      <AnimatePresence>
+        {isAuthorModalOpen && (
+          <motion.div
+            id="author-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setIsAuthorModalOpen(false)}
+            className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4 transition-all duration-300"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Author Profile Modal"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 8 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 8 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#111] p-8 rounded-2xl w-full max-w-md border border-[#222] shadow-2xl relative text-left"
+            >
+              {/* Close */}
+              <button
+                type="button"
+                onClick={() => setIsAuthorModalOpen(false)}
+                className="absolute top-4 right-4 p-2 bg-[#1A1A1A] rounded-full hover:bg-[#222] transition-colors border border-[#333] cursor-pointer"
+                aria-label="Close author modal"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
+
+              {/* Name */}
+              <h2 className="font-heading text-2xl font-bold text-white mb-1">
+                Stanislav Dovidenko
+              </h2>
+
+              {/* Role */}
+              <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[#00F0FF] mb-6">
+                Product Designer
+              </p>
+
+              {/* About */}
+              <div className="text-[#AAA] text-sm mb-8 space-y-4 font-sans">
+                <p>
+                  Product designer focusing on AI, SaaS interfaces,
+                  and complex systems. Crafting functional and aesthetic
+                  products for the future.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <a
+                    href="https://stanislavdovidenko.com/en.html#about"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#00F0FF] hover:underline text-xs inline-block font-sans"
+                  >
+                    Read more about me &rarr;
+                  </a>
+                  <span className="text-zinc-600">·</span>
+                  <a
+                    href="https://agentic-ui-kit.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#00F0FF] hover:underline text-xs inline-block font-sans"
+                  >
+                    Live on Vercel &rarr;
+                  </a>
+                </div>
+              </div>
+
+              {/* Contacts */}
+              <div className="space-y-3 font-sans">
+                {/* Telegram */}
+                <a
+                  href="https://t.me/StasDoDesign"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 bg-[#151515] border border-[#222] rounded-lg hover:border-[#00F0FF] hover:bg-[#1A1A1A] transition-all group"
+                >
+                  <span className="text-xs uppercase tracking-widest text-[#888] group-hover:text-[#00F0FF] w-24">
+                    Telegram
+                  </span>
+                  <span className="text-sm text-[#E0E0E0]">
+                    @StasDoDesign
+                  </span>
+                </a>
+
+                {/* LinkedIn */}
+                <a
+                  href="http://linkedin.com/in/stasdodesign"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 bg-[#151515] border border-[#222] rounded-lg hover:border-[#00F0FF] hover:bg-[#1A1A1A] transition-all group"
+                >
+                  <span className="text-xs uppercase tracking-widest text-[#888] group-hover:text-[#00F0FF] w-24">
+                    LinkedIn
+                  </span>
+                  <span className="text-sm text-[#E0E0E0]">
+                    /in/stasdodesign
+                  </span>
+                </a>
+
+                {/* Instagram */}
+                <a
+                  href="https://instagram.com/stasdodesign"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 bg-[#151515] border border-[#222] rounded-lg hover:border-[#00F0FF] hover:bg-[#1A1A1A] transition-all group"
+                >
+                  <span className="text-xs uppercase tracking-widest text-[#888] group-hover:text-[#00F0FF] w-24">
+                    Instagram
+                  </span>
+                  <span className="text-sm text-[#E0E0E0]">
+                    @stasdodesign
+                  </span>
+                </a>
+
+                {/* Email */}
+                <a
+                  href="mailto:stasdodesign@gmail.com"
+                  className="flex items-center gap-3 p-3 bg-[#151515] border border-[#222] rounded-lg hover:border-[#00F0FF] hover:bg-[#1A1A1A] transition-all group"
+                >
+                  <span className="text-xs uppercase tracking-widest text-[#888] group-hover:text-[#00F0FF] w-24">
+                    Email
+                  </span>
+                  <span className="text-sm text-[#E0E0E0] truncate">
+                    stasdodesign@gmail.com
+                  </span>
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

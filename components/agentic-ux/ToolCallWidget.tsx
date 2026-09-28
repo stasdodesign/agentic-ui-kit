@@ -196,12 +196,12 @@ export const ToolCallWidget: React.FC<ToolCallWidgetProps> = ({
             </div>
 
             {tool.endpoint && (
-              <div className="px-3 py-1.5 border-t border-zinc-800/80 bg-zinc-900/50 flex items-center justify-between text-[10px] text-zinc-500">
-                <span className="flex items-center gap-1">
-                  <Server className="w-3 h-3" />
-                  <span>Target: {tool.endpoint}</span>
+              <div className="px-3 py-1.5 border-t border-zinc-800/80 bg-zinc-900/50 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-zinc-500">
+                <span className="flex items-center gap-1 min-w-0">
+                  <Server className="w-3 h-3 shrink-0" />
+                  <span className="break-all">Target: {tool.endpoint}</span>
                 </span>
-                <span className="text-teal-400/80 flex items-center gap-0.5">
+                <span className="text-teal-400/80 flex items-center gap-0.5 shrink-0">
                   Live MCP Dispatch <ArrowRight className="w-2.5 h-2.5" />
                 </span>
               </div>

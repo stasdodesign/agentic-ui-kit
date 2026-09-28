@@ -179,7 +179,7 @@ export const AgentStatusBadge: React.FC<AgentStatusBadgeProps> = ({
 
       {showIcon && <Icon className="w-3.5 h-3.5 shrink-0 opacity-80" />}
 
-      <span className="whitespace-nowrap tracking-tight">{config.label}</span>
+      <span className="tracking-tight leading-tight break-words">{config.label}</span>
     </div>
   );
 };

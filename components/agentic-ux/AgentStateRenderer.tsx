@@ -44,13 +44,13 @@ export const AgentStateRenderer: React.FC<AgentStateRendererProps> = ({
     >
       {/* 1. Header Bar: Agent Identity + Status Badge + Execution Metrics */}
       {showHeader && (
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-100 dark:border-zinc-850 bg-zinc-50/70 dark:bg-zinc-900/50">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-200 flex items-center justify-center font-mono text-xs font-semibold shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 sm:px-5 py-3 border-b border-zinc-100 dark:border-zinc-850 bg-zinc-50/70 dark:bg-zinc-900/50">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-200 flex items-center justify-center font-mono text-xs font-semibold shadow-xs shrink-0">
               <Bot className="w-4 h-4 text-indigo-400" />
             </div>
-            <div className="text-left">
-              <div className="flex items-center gap-1.5">
+            <div className="text-left min-w-0">
+              <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
                   {agentName}
                 </span>
@@ -58,15 +58,15 @@ export const AgentStateRenderer: React.FC<AgentStateRendererProps> = ({
                   v2.4
                 </span>
               </div>
-              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 block leading-tight mt-0.5">
+              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 block leading-tight mt-0.5 break-words">
                 {agentRole}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 shrink-0 pt-1 sm:pt-0 border-t border-zinc-100 dark:border-zinc-850/60 sm:border-0">
             {showMetrics && payload?.summary?.metrics?.executionTimeMs !== undefined && (
-              <span className="hidden sm:inline-flex items-center gap-1 font-mono text-[11px] text-zinc-400 dark:text-zinc-500 tabular-nums">
+              <span className="inline-flex items-center gap-1 font-mono text-[11px] text-zinc-400 dark:text-zinc-500 tabular-nums">
                 <Clock className="w-3 h-3 text-zinc-400" />
                 <span>{payload.summary.metrics.executionTimeMs}ms</span>
               </span>
@@ -331,12 +331,12 @@ export const AgentStateRenderer: React.FC<AgentStateRendererProps> = ({
       </div>
 
       {/* 3. Subtle Footer Status Note */}
-      <div className="px-5 py-2.5 bg-zinc-50/50 dark:bg-zinc-900/30 border-t border-zinc-100 dark:border-zinc-850 flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-500">
-        <span className="flex items-center gap-1.5">
-          <Shield className="w-3 h-3 text-zinc-400" />
+      <div className="px-4 sm:px-5 py-2.5 bg-zinc-50/50 dark:bg-zinc-900/30 border-t border-zinc-100 dark:border-zinc-850 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-500">
+        <span className="flex items-start sm:items-center gap-1.5 leading-tight">
+          <Shield className="w-3 h-3 text-zinc-400 shrink-0 mt-0.5 sm:mt-0" />
           <span>Agentic UX Principle: {meta.uxObjective}</span>
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-400">
+        <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-400 shrink-0">
           Phase: {meta.phase}
         </span>
       </div>

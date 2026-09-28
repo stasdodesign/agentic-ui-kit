@@ -112,29 +112,29 @@ export const ApprovalCard: React.FC<ApprovalCardProps> = ({
     >
       {/* Top Banner: Action Title & Risk Level */}
       <div className="flex items-start justify-between gap-3">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
+        <div className="space-y-1.5 min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
             <span
-              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider uppercase border ${style.badgeBg} ${style.badgeText} ${style.badgeBorder}`}
+              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider uppercase border shrink-0 ${style.badgeBg} ${style.badgeText} ${style.badgeBorder}`}
             >
-              <ShieldAlert className="w-3 h-3" />
-              {data.riskLevel} Risk Gate
+              <ShieldAlert className="w-3 h-3 shrink-0" />
+              <span>{data.riskLevel} Risk Gate</span>
             </span>
 
             {data.reversible ? (
-              <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
-                <Undo2 className="w-3 h-3" />
-                Reversible Action
+              <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400 font-medium shrink-0">
+                <Undo2 className="w-3 h-3 shrink-0" />
+                <span>Reversible Action</span>
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-[11px] text-rose-700 dark:text-rose-400 font-medium">
-                <AlertTriangle className="w-3 h-3" />
-                Irreversible Mutation
+              <span className="inline-flex items-center gap-1 text-[11px] text-rose-700 dark:text-rose-400 font-medium shrink-0">
+                <AlertTriangle className="w-3 h-3 shrink-0" />
+                <span>Irreversible Mutation</span>
               </span>
             )}
           </div>
 
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 tracking-tight">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 tracking-tight break-words">
             {data.actionTitle}
           </h4>
         </div>
@@ -162,9 +162,9 @@ export const ApprovalCard: React.FC<ApprovalCardProps> = ({
 
       {/* Target Resource Metadata */}
       {data.affectedResource && (
-        <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
-          <span className="font-medium text-zinc-500 dark:text-zinc-400">Target Target:</span>
-          <span className="font-mono bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-[11px] text-zinc-800 dark:text-zinc-200">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 text-xs text-zinc-600 dark:text-zinc-400 min-w-0">
+          <span className="font-medium text-zinc-500 dark:text-zinc-400 shrink-0">Target Resource:</span>
+          <span className="font-mono bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded text-[11px] text-zinc-800 dark:text-zinc-200 break-all leading-relaxed">
             {data.affectedResource}
           </span>
         </div>
