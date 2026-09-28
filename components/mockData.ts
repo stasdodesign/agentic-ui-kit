@@ -32,7 +32,7 @@ export const SCENARIOS: ScenarioDefinition[] = [
             label: 'Verify AWS IAM role & session security token',
             status: 'completed',
             durationMs: 45,
-            detail: 'Verified role arn:aws:iam::611629790173:role/DevOpsEngine with RDS write access.',
+            detail: 'Verified role arn:aws:iam::123456789012:role/DevOpsEngine with RDS write access.',
           },
           {
             id: 'p2',

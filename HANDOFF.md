@@ -1,146 +1,127 @@
-# HANDOFF.md — Agentic UX: 12-State Design System
+# 📋 Project Handoff: Agentic UX Framework & Design System
 
-> Comprehensive project handoff document summarizing current status, implemented features, blockers, upcoming roadmap, and critical architectural & design decisions.
-
----
-
-## 1. Project Overview & UX Objective
-
-**Agentic UX** is an enterprise-grade, state-machine-driven design system and React component suite built with **Next.js 15+ (App Router)**, **TypeScript**, **Tailwind CSS v4**, and **Framer Motion (`motion/react`)**. 
-
-It implements the definitive **12 Canonical States of Autonomous AI Agents** to solve the *Cognitive Visibility Gap* (the "Black Box Problem" of autonomous agents) by enforcing absolute transparency, explainable tool execution (XAI), and robust Human-in-the-Loop (HITL) safety governance.
-
-### Core UX Objectives:
-1. **Cognitive Transparency (Intake & Cognition):** Clearly convey when the agent is idle, listening to streaming input, thinking, planning multi-step task graphs, or waiting on external resources.
-2. **Explainable Execution (Action & XAI):** Real-time inspection of tool calls (MCP / REST / DB / GraphQL), payload parameters, latency metrics, and step-by-step execution status.
-3. **Human-in-the-Loop (HITL) Safety Gate:** Strict pre-execution review for high-risk, irreversible, or destructive mutations with impact analysis and live JSON parameter editing.
-4. **Resilience & Reversibility (Resolution):** Actionable failure panels with error classification, rollback status, atomic undo triggers, and post-execution audit summaries.
+> **Document Version:** 1.0.0  
+> **Last Updated:** 2026-09-28  
+> **Author & Lead Designer:** Stanislav Dovidenko (*Product Designer*)  
+> **Contacts:** [Telegram](https://t.me/StasDoDesign) · [Email](mailto:Stanislavskii.yo@gmail.com) · [Portfolio](https://stanislavdovidenko.com/en.html#about)  
+> **Production Live URL:** [https://agentic-ui-kit.vercel.app/](https://agentic-ui-kit.vercel.app/)
 
 ---
 
-## 2. Current Project Status
+## 1. Executive Summary & Project Status
 
-- **Build & Compilation:** 🟢 **Passing** (`compile_applet` succeeds cleanly).
-- **Static Analysis & Lint:** 🟢 **0 errors, 0 warnings** (`eslint .` clean).
-- **Responsiveness:** 🟢 **Fully responsive** from 320px mobile viewports up to 4K ultra-wide displays.
-- **Theme Support:** 🟢 **Light & Dark mode** with custom Tailwind v4 variant and WCAG AA contrast compliance.
-- **Deployment Status:** Production-ready and active on AI Studio Cloud Run.
+- **Status:** 🟢 **Production Ready / Polished**
+- **Build Status:** 0 lint errors (`eslint .`), clean build (`next build`), 100% TypeScript typed.
+- **Framework & Tech Stack:**
+  - **Core:** Next.js 15+ (App Router), React 19, TypeScript
+  - **Styling:** Tailwind CSS v4, PostCSS
+  - **Animation:** `motion` (`motion/react`)
+  - **Icons:** `lucide-react`
+  - **Accessibility:** WCAG AA compliant contrast ratios across dark & light modes.
 
----
-
-## 3. Implemented Features & Architecture
-
-### A. The 12 Canonical Agent States
-Organized across 4 distinct execution phases in `types.ts` and `STATE_METADATA_REGISTRY`:
-
-| Phase | State | Purpose & UX Behavior |
-| :--- | :--- | :--- |
-| **1. Intake** | `idle` | Passive readiness, awaiting user prompt or scheduled trigger. |
-| | `listening` | Active streaming input visualizer with dynamic audio waveform and live transcription. |
-| **2. Cognition** | `thinking` | Deep inference state with ambient pulsing indicator and cognitive progress. |
-| | `planning` | Dynamic step-by-step reasoning graph accordion with elapsed time indicators. |
-| | `asking-clarification` | Ambiguity resolution interface with quick recommendation chips and manual reply input. |
-| | `waiting` | Backoff / rate-limit / advisory lock state with active resource indicators. |
-| **3. Action & HITL** | `tool-calling` | MCP / API tool invocation drawer with collapsible JSON parameters and copy button. |
-| | `processing` | Mutation in-flight with progress bar, active step label, and cancel option. |
-| | `asking-confirmation` | Strict HITL approval gate: risk tier (`low` to `critical`), impact consequences, reversible/irreversible badges, payload editor, and Authorize/Reject actions. |
-| | `executing` | Committing state to databases or external webhooks. |
-| **4. Resolution** | `failed` | Failure recovery panel with error code, recovery suggestion, rollback check, and Retry/Abort buttons. |
-| | `completed` | Audit summary card with token count, latency metrics, affected entities, and atomic Undo trigger. |
-
-### B. Core Component Library (`/components/agentic-ux/`)
-- **`AgentStateRenderer.tsx`**: Master coordinator wrapping all 12 sub-views with smooth `AnimatePresence mode="wait"` transitions. Includes adaptive responsive header and footer metadata.
-- **`AgentStatusBadge.tsx`**: Polished status tag with contextual icons, pulse indicators, and responsive word wrapping (`break-words`).
-- **`ApprovalCard.tsx`**: High-security Human-in-the-Loop authorization card with inline JSON payload editor, consequence checklist, and `break-all` protection for long URIs.
-- **`ToolCallWidget.tsx`**: Protocol-aware MCP/DB/REST inspector with parameter/output tabs, copy-to-clipboard, and endpoint badges.
-- **`ReasoningAccordion.tsx`**: Multi-phase reasoning plan renderer displaying in-progress, completed, and pending steps.
-- **`ErrorRecoveryPanel.tsx`**: Diagnostic panel for interrupted workflows with error taxonomy and automated rollback validation.
-- **`ClarificationPanel.tsx`**: Interactive query prompt for disambiguating intent before agent execution.
-- **`ListeningVisualizer.tsx`**: High-fidelity audio/voice visualizer with dynamic wave bars and transcript display.
-- **`CompletedSummary.tsx`**: Resolution card with execution duration, token consumption, resource impact, and Undo action.
-
-### C. Interactive Studio & Testing Playground (`/components/Playground.tsx`)
-- **Scenario Sandbox**: Pre-configured real-world enterprise scenarios:
-  1. *PostgreSQL Database Migration* (High risk, irreversible mutation, table locking, schema modification).
-  2. *Customer Support Dispute & Refund* (Medium risk, reversible Stripe refund and webhook pause).
-- **Auto-Run Workflow Simulator**: Automated state sequencer (`SIMULATION_FLOW`) with Play/Pause controls.
-- **Live Payload Editor**: In-place JSON editor allowing developers to customize state data and verify UI responses immediately.
-- **Action History Audit Log**: Chronological audit trail of all dispatched agent actions (`CONFIRM_ACTION`, `RETRY`, `UNDO`, etc.).
-- **12-State Matrix Gallery**: Full simultaneous audit grid of all 12 states side-by-side.
-- **Design Constitution & Architecture Tab**: In-depth documentation of the 4 Pillars of Agentic Transparency and Human-in-the-Loop governance.
-- **React Code Snippet Generator**: Automatically produces copy-pasteable TypeScript integration code.
-
-### D. Author Profile & Branding Integration
-- **Author:** Stanislav Dovidenko (Product Designer).
-- **Footer Badge:** Centered responsive author pill with cyan status indicator.
-- **Author Modal (`#author-modal`):** Sleek modal with bio, role, close button, Escape key / backdrop dismissal, and links:
-  - Website: `https://stanislavdovidenko.com/en.html#about`
-  - Telegram: `@StasDoDesign` (`https://t.me/StasDoDesign`)
-  - LinkedIn: `/in/stasdodesign` (`http://linkedin.com/in/stasdodesign`)
-  - Instagram: `@stasdodesign` (`https://instagram.com/stasdodesign`)
-  - Email: `stasdodesign@gmail.com` (`mailto:stasdodesign@gmail.com`)
-
-### E. Mobile Responsiveness & WCAG Accessibility
-- **Mobile Header Navigation:** Collapses desktop segmented tabs into an animated drawer (`Menu` / `X` toggle) with tab switching, Auto-Run controls, and author profile trigger.
-- **Text Wrapping & Zero Horizontal Overflow:**
-  - Card headers adapt from single-row to stacked flex columns (`flex-col sm:flex-row gap-3`) on mobile.
-  - Long URLs and URIs (e.g., `aws-rds://production-primary.cluster/billing_subscriptions`, `mcp://...`) use `break-all min-w-0` to remain strictly within card boundaries.
-- **WCAG AA Compliance:** Light-mode hover state colors adjusted to `text-cyan-800 hover:border-cyan-600` to maintain > 4.5:1 contrast against light backgrounds.
+The project establishes a comprehensive **12-state Finite State Machine (FSM)** design standard for autonomous enterprise AI agents. It addresses the **Cognitive Visibility Gap** by replacing opaque spinners and black-box chat streams with structured, deterministic, and inspectable UI micro-states.
 
 ---
 
-## 4. Current Blockers
+## 2. Implemented Features & Architecture
 
-- **Zero Critical Blockers:** There are no build failures, syntax errors, or runtime crashes.
-- **Production Safe Mode Active:** Any future modifications must adhere to surgical, minimal patches.
+### 2.1 The 12 Canonical Agent States (`AgentState`)
+Every agent state has an assigned semantic color palette, ping indicator, icon, UX objective, and distinct visual container:
 
----
+1. **`idle` (Input Phase):** Ready state with prompt suggestions and system status.
+2. **`listening` (Input Phase):** Audio/text input capture with reactive wave/pulse indicator.
+3. **`thinking` (Cognitive Phase):** Step-by-step Chain of Thought (`ReasoningChain.tsx`) with collapsibility and timing markers.
+4. **`planning` (Cognitive Phase):** Dynamic execution steps (`PlanList.tsx`) with dependencies and status badges.
+5. **`tool-calling` (Execution Phase):** Real-time MCP / DB tool inspection (`ToolCallWidget.tsx`) with parameters, latency (`ms`), and payload copying.
+6. **`waiting` (Execution Phase):** External asynchronous wait indicator for locks and remote transactions.
+7. **`clarifying` (Interaction Phase):** Multi-choice ambiguity resolution (`ClarificationSelector.tsx`) with recommendations.
+8. **`processing` (Execution Phase):** Post-tool data validation, schema checks, and sample verification.
+9. **`asking-confirmation` (Interaction Phase):** **Human-in-the-Loop Guardrail** (`ApprovalCard.tsx`) with:
+   - Risk classification: `low`, `medium`, `high`, `critical`.
+   - Reversible vs. Irreversible mutation banners.
+   - Target resource display with string wrapping (`break-all`).
+   - In-place JSON payload editor for pre-execution modification.
+   - Impact analysis itemized consequence list.
+10. **`executing` (Execution Phase):** State commitment with active pulsing indicator and auto-advancement to resolution.
+11. **`completed` (Resolution Phase):** Final outcome report (`CompletionSummary.tsx`) with latency metrics and a 10-second interactive Undo window.
+12. **`failed` (Resolution Phase):** Diagnostic failure card (`FailureCard.tsx`) with root-cause categorization, safe retry, and rollback triggers.
 
-## 5. Upcoming Roadmap & Next Steps
+### 2.2 Interactive Studio & Views (`Playground.tsx`)
+- **Interactive Studio View:**
+  - **Scenario Sandbox:** 4 realistic scenarios:
+    - `rds-migration` (PostgreSQL production schema alteration & table locks).
+    - `customer-refund` (FinTech multi-gateway transaction refund).
+    - `k8s-autoscale` (DevOps Kubernetes cluster scaling).
+    - `legal-analysis` (LegalTech NDA liability clause review).
+  - **Workflow Auto-Simulation:** Automated progression through states with speed controls (Fast 1.2s, Normal 2.2s, Deliberate 3.8s).
+  - **Interactive FSM Stepper:** Horizontal chain for immediate single-click state previews.
+  - **Live JSON Payload Editor:** Real-time editing and testing of component props with syntax error validation.
+  - **Action History Audit Log:** Real-time stream of dispatched user and agent actions.
+  - **Embed Code Generator:** One-click copy of clean JSX for external project adoption.
+- **12-State Matrix View:** All 12 states side-by-side for comprehensive design system audits and presentation.
+- **Architecture & Rules View:** Comprehensive documentation of the 4 pillars of Agentic UX and transition rules.
+- **Author Profile Modal:** Clean modal showcasing designer bio, key links, social channels, and Loom audit CTA.
 
-1. **Live Agent Stream Integration (Backend SSE / WebSockets):**
-   - Create a Next.js Route Handler (`app/api/agent/stream/route.ts`) implementing Server-Sent Events (SSE).
-   - Build a reusable React hook `useAgentStream(endpoint)` that parses agent stream chunks into `AgentStatePayload` and updates `AgentStateRenderer` in real time.
-   - Add compatibility adapters for popular agent frameworks (LangGraph, Vercel AI SDK, AutoGen, CrewAI, Gemini Function Calling).
-
-2. **Additional Enterprise Scenarios:**
-   - *Autonomous Codebase Refactoring*: AST analysis, Vitest test execution, branch creation, Git commit.
-   - *Multimodal Voice Agent*: Live audio streaming transcription, tool dispatch, and speech synthesis.
-   - *Web Research & Search Grounding*: Google Search grounding citation chips and source verification.
-
-3. **Component Distribution & Export:**
-   - Package components into an npm package (`@agentic-ux/react`) or a `shadcn/ui` compatible registry block (`npx shadcn add @agentic-ux/card`).
-   - Export Figma UI Kit tokens and design system variables.
-
-4. **Testing & QA:**
-   - Add Vitest unit tests verifying state transitions and action callback payloads.
-   - Add Playwright E2E tests for mobile hamburger menu toggle, modal interactions, and keyboard navigation (`Escape`, `Tab` focus trap).
-
----
-
-## 6. Critical Technical Decisions & Guardrails ⚠️
-
-1. **Framer Motion Import Convention (v12 `motion` package):**
-   - **RULE:** Never import from `'framer-motion'`. Always import from `'motion/react'`:
-     ```tsx
-     import { motion, AnimatePresence } from 'motion/react';
-     ```
-2. **React 19 / ESLint 9 Hook Discipline (`react-hooks/set-state-in-effect`):**
-   - **RULE:** Do not invoke `setState` synchronously inside `useEffect` bodies during initial render.
-   - Use lazy state initialization (`useState(() => compute())`) or derived state variables.
-3. **JSX Entity Escaping (`react/no-unescaped-entities`):**
-   - **RULE:** Never use unescaped single quotes (`'`) or double quotes (`"`) directly in JSX text. Use `&apos;`, `&quot;`, `&ldquo;`, `&rdquo;`, or string expressions `{'text'}`.
-4. **Tailwind CSS v4 Dark Mode Configuration:**
-   - In `app/globals.css`, dark mode relies on:
-     ```css
-     @custom-variant dark (&:where(.dark, .dark *));
-     ```
-   - Do not remove or alter this directive.
-5. **Break-All Rule for Monospaced Identifiers:**
-   - All server endpoints, URIs, database paths, and hashes must have `break-all` and `min-w-0` to avoid horizontal layout breaking on mobile screens.
-6. **WCAG Color Discipline:**
-   - Avoid low-contrast neon colors on light backgrounds. Reserve `#00F0FF` for dark mode (`dark:text-[#00F0FF]`) and use deep contrast tones (`text-cyan-800`, `border-cyan-600`) for light mode.
+### 2.3 Mobile & Responsive Optimizations
+- **Header & Tag Wrapping:** Card headers use `flex-col sm:flex-row gap-3` so agent identity, version badges, and status tags (`Human-in-the-Loop Gate`) never collide or truncate on narrow screens.
+- **Resource Word Breaking:** Long URIs like `aws-rds://production-primary.cluster/billing_subscriptions` and `mcp://...` use `break-all` and `min-w-0` to guarantee zero horizontal scroll.
+- **Adaptive Badges:** Status badges use `tracking-tight leading-tight break-words` instead of rigid `nowrap`.
+- **Footer Centering:** Author badge in the footer adapts to `flex-col items-center text-center` on mobile.
+- **Mobile Navigation:** Dedicated hamburger slide-out drawer with quick scenario switching and author access.
 
 ---
 
-*Handoff document maintained for the Agentic UX project. Last updated: September 2026.*
+## 3. Critical Design Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| **FSM-Driven State Machine** | AI agents cannot be treated as simple chat bubbles. Explicit states ensure predictable, reproducible UI transitions and prevent user confusion. |
+| **Mandatory Human-in-the-Loop for Irreversible Actions** | Critical mutations (dropping indexes, transferring funds) require explicit authorization with impact consequences and pre-flight payload inspection. |
+| **Zero-Pill Discipline & Semantic Color Coding** | High-contrast, domain-meaningful colors (Orange = Gate, Amber = Thinking, Teal = Tool, Rose = Failure, Emerald = Success) rather than arbitrary aesthetic gradients. |
+| **Break-all on Monospace Resource Identifiers** | Machine-generated strings (URIs, hashes, endpoints) contain no natural whitespace. Applying `break-all` prevents container blowouts on mobile viewports. |
+| **Dual-Mode Contrast Compliance (WCAG AA)** | Light-mode hover states use `cyan-800`/`cyan-600` for readable contrast against white backgrounds, while dark mode retains the `#00F0FF` cyberpunk accent. |
+
+---
+
+## 4. Current Blockers & Technical Debt
+
+- **Blockers:** 🟢 **None**. The codebase compiles without errors and passes all ESLint rules.
+- **Technical Debt:** Minimal. Mock payloads are statically defined in `mockData.ts` to ensure instant sandbox responsiveness without requiring live backend credentials.
+
+---
+
+## 5. Upcoming Roadmap & Recommendations
+
+1. **NPM / Shadcn Registry Component Distribution:**
+   - Package the components under `@agentic-ux/react` or provide a `npx shadcn add` CLI registry configuration for fast adoption by developers.
+2. **Server-Sent Events (SSE) / WebSocket Streaming Adapter:**
+   - Implement an optional React hook (e.g., `useAgentState({ streamUrl: '/api/agent/stream' })`) that maps incoming LangChain, LlamaIndex, or Vercel AI SDK events to the 12 FSM states.
+3. **Multi-Agent Orchestrator Hierarchy:**
+   - Add a tree view or DAG visualization for workflows where a parent orchestrator delegates sub-tasks to specialized sub-agents (e.g., Lead Researcher $\rightarrow$ Data Fetcher).
+4. **OpenTelemetry / Tracing Integration:**
+   - Visual connector showing distributed trace IDs (`trace_id`, `span_id`) directly on tool-call cards for enterprise observability.
+
+---
+
+## 6. Key File Index
+
+- `components/Playground.tsx` — Main interactive studio, state management, matrix gallery, and documentation views.
+- `components/mockData.ts` — Pre-configured scenarios and realistic enterprise payloads.
+- `components/agentic-ux/AgentStateRenderer.tsx` — Universal state canvas router.
+- `components/agentic-ux/AgentStatusBadge.tsx` — Semantic pulsing status indicator.
+- `components/agentic-ux/ApprovalCard.tsx` — Human-in-the-Loop decision guardrail.
+- `components/agentic-ux/ToolCallWidget.tsx` — MCP/API tool execution inspector.
+- `components/agentic-ux/ReasoningChain.tsx` — Chain of Thought step-by-step viewer.
+- `components/agentic-ux/PlanList.tsx` — Multi-phase execution plan.
+- `types/index.ts` — Strict TypeScript contracts for all states, actions, and metadata.
+- `README.md` — User manual, installation guide, and author credentials.
+
+---
+
+## 7. Contacts & Consulting
+
+For custom enterprise UX audits, bespoke design system integration, or inquiries:
+- **Designer:** Stanislav Dovidenko
+- **Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)
+- **Email:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)
+- **Loom Audit:** Available for 20-minute async architectural reviews.
