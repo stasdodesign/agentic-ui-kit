@@ -1,0 +1,6 @@
+{
+  "name": "Agentic UX: 12 States Design System",
+  "description": "Enterprise React component library and interactive playground implementing the 12 states of autonomous AI agents with transparent Tool Calling, Reasoning Chains, and Human-in-the-Loop approval.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
