@@ -246,12 +246,12 @@ export const AgentPlayground: React.FC = () => {
     {
       phase: 'cognition',
       title: '2. Cognition Phase',
-      states: ['thinking', 'planning', 'asking-clarification', 'waiting'],
+      states: ['thinking', 'planning', 'asking-clarification'],
     },
     {
       phase: 'action',
       title: '3. Execution & HITL',
-      states: ['tool-calling', 'processing', 'asking-confirmation', 'executing'],
+      states: ['waiting', 'tool-calling', 'processing', 'asking-confirmation', 'executing'],
     },
     {
       phase: 'resolution',

@@ -1,219 +1,126 @@
-> 🇷🇺 **Russian version is available [here](./README.ru.md).**
+# 🤖 Agentic UX — 12-State Design System for AI Agents
+
+> 🇷🇺 **Russian version:** [README.ru.md](./README.ru.md)
+
+**A 12-state framework and interactive playground for designing interfaces around autonomous AI agents.**
+
+Most AI agents still feel like a black box. Users often cannot tell whether an agent is still working, waiting for an external system, calling a tool, asking for clarification, or preparing to execute an important action. Traditional chat interfaces were not designed for these scenarios.
+
+**Agentic UX** models the agent's lifecycle as a set of explicit interface states using a strict 12-state Finite State Machine (FSM).
+
+🌐 **Live Demo:** [https://agentic-ui-kit.vercel.app/](https://agentic-ui-kit.vercel.app/)  
+📦 **Open Source:** [https://github.com/stasdodesign/agentic-ui-kit](https://github.com/stasdodesign/agentic-ui-kit)  
+👤 **Concept & Design:** Stanislav Dovidenko — Product Designer  
+🌐 **Portfolio:** [https://stanislavdovidenko.com/](https://stanislavdovidenko.com/)
 
 ---
 
-# 🤖 Agentic UX: 12-State Framework for AI Agents. Design System & Interactive Playground
+## 📌 The Problem: The Cognitive Visibility Gap
 
-> **Enterprise-grade UI standard for autonomous AI agents (Next.js 15, React 19, TypeScript, Tailwind CSS, Motion).**  
-> 🌐 **Live Demo (Vercel):** [https://agentic-ui-kit.vercel.app/](https://agentic-ui-kit.vercel.app/)  
-> Concept & Design by: **Stanislav Dovidenko** — *Product Designer*  
-> 📩 **Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)  
-> ✉️ **Email:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)  
-
----
-
-## 📌 About the Project
-
-When users interact with autonomous AI agents, the primary UX challenge is the **Cognitive Visibility Gap**: users cannot tell whether an agent is hanging, what backend commands or MCP tools it is calling, or what irreversible mutations it is about to execute.
-
-**Agentic UX** solves this by establishing a strict **12-State Finite State Machine (FSM)**. It provides real-time visibility into the agent's Chain of Thought (CoT), transparent parameter inspection for tool calls, and an uncompromising **Human-in-the-Loop (HITL) safety gate** for high-stakes actions.
+A chat bubble with a spinner is enough for a simple text answer, but it breaks down when an agent:
+* Decomposes a multi-step task
+* Calls external tools, APIs, or MCP servers
+* Waits for a database, lock, or remote system
+* Needs additional clarification or parameters
+* Requires explicit Human-in-the-Loop authorization
+* Executes a consequential or irreversible action
+* Encounters an error and needs recovery
+* Completes a task and summarizes the result
 
 ---
 
-## 🗂️ The 12 Canonical States of Autonomous Agents
+## 🗂️ The 12 Canonical States
 
-The state machine is organized into 4 logical phases: **Intake**, **Cognition**, **Execution**, and **Resolution**.
+The framework groups 12 states across 4 lifecycle phases:
 
-| # | State (`AgentState`) | Phase | UX Purpose & Expected Behavior |
-|---|----------------------|-------|--------------------------------|
-| 1 | `idle` | `Intake` | Passive readiness: agent displays suggestions, context, and trigger hints. |
-| 2 | `listening` | `Intake` | Active streaming input (audio/text) with waveform micro-animations. |
-| 3 | `thinking` | `Cognition` | Live inference indicator; shows intent without fake loading delays. |
-| 4 | `planning` | `Cognition` | Multi-step task decomposition with dependency graph and timing estimates. |
-| 5 | `tool-calling` | `Execution` | Transparent inspection of external tool/MCP/API parameters and response payloads. |
-| 6 | `waiting` | `Execution` | Explicit backoff, advisory lock acquisition, or distributed sync delay. |
-| 7 | `clarifying` | `Cognition` | Ambiguity resolution: agent presents selectable chips or asks for user input. |
-| 8 | `processing` | `Execution` | In-flight mutation, data validation, and artifact aggregation. |
-| 9 | `asking-confirmation`| `Execution` | **Human-in-the-Loop Guardrail:** impact analysis, risk badge, and authorization gate. |
-| 10| `executing` | `Execution` | Atomic transaction commit and database/webhook write state. |
-| 11| `completed` | `Resolution` | Objective achieved: latency, token metrics, summary, and **atomic Undo**. |
-| 12| `failed` | `Resolution` | Diagnostic error classification, rollback status, and one-click recovery. |
+| # | State (`AgentState`) | Phase | UX Purpose |
+|---|---|---|---|
+| 1 | `idle` | Intake | Agent is ready and waiting for a task or trigger. |
+| 2 | `listening` | Intake | Agent receives voice, text, or streaming input. |
+| 3 | `thinking` | Cognition | Agent interprets the request and extracts intent. |
+| 4 | `planning` | Cognition | Agent prepares a multi-step execution plan. |
+| 5 | `asking-clarification` | Cognition | Agent needs additional information to continue safely. |
+| 6 | `waiting` | Action | Agent is waiting for an external resource, lock, or response. |
+| 7 | `tool-calling` | Action | Agent invokes an external tool, API, database, or MCP endpoint. |
+| 8 | `processing` | Action | Agent validates and synthesizes tool output. |
+| 9 | `asking-confirmation` | Action | **Human-in-the-Loop gate** before a consequential action. |
+| 10 | `executing` | Action | Agent commits the approved mutation or operation. |
+| 11 | `failed` | Resolution | Execution stopped; recovery options presented. |
+| 12 | `completed` | Resolution | Task finished; summary and atomic Undo provided. |
 
 ---
 
-## 🌟 Key Features
+## 🧪 Interactive Studio & Features
 
-- **12 Canonical State Components:** Every phase has dedicated color coding, status badges, iconography, and semantic layouts.
-- **Interactive Sandbox:** 4 realistic enterprise scenarios:
-  1. *PostgreSQL Migration* — high-risk table locking and DDL schema mutation.
-  2. *Customer Dispute & Refund* — financial adjustment with instant reversibility.
-  3. *Kubernetes Pod Autoscaling* — infrastructure cluster selection and capacity checks.
-  4. *Legal Contract Analysis* — document intelligence and risk clause flagging.
-- **Auto-Run Workflow Simulator:** Automated playback through state sequences at adjustable speeds.
-- **Live JSON Payload Editor:** Edit execution parameters in real time to test adaptive UI behavior.
-- **Action History Audit Log:** Real-time chronological audit trail of all dispatched agent actions.
-- **12-State Matrix Gallery:** Side-by-side comparison view of all 12 cards for design reviews.
-- **Zero Horizontal Overflow & Break-All Discipline:** Monospaced identifiers, DB cluster paths, and API endpoints wrap cleanly on mobile screens (320px+).
-- **WCAG AA Compliance:** High-contrast light and dark themes with accessible color palettes.
+* **12-State Interactive Studio:** Inspect every state card individually in real time.
+* **Workflow Simulator:** Run automated playback through state sequences.
+* **Human-in-the-Loop (HITL) Gate:** Surface risk levels, affected resources, impact analysis, and reversible/irreversible badges with Approve/Reject controls.
+* **Tool Call Inspector:** Inspect tool names, protocol (MCP/REST/SQL), parameters, execution latency, and response output.
+* **Live JSON Payload Editor:** Modify state parameters directly in the playground with instant UI updates.
+* **Action History Audit Log:** Real-time chronological audit trail of dispatched actions.
+* **12-State Matrix:** View all 12 states side-by-side for design reviews and consistency checks.
+
+---
+
+## 🏢 Enterprise Scenarios
+
+The reference implementation includes 2 self-contained enterprise scenarios with static mock data:
+1. **PostgreSQL Database Migration:** High-risk production DDL schema change with Exclusive Table Lock warnings, safety confirmation gates, and error recovery.
+2. **Customer Support Dispute & Refund:** Multi-step financial transaction lookup, policy check, refund execution, and atomic Undo window.
+
+---
+
+## 🛠️ Tech Stack & Project Structure
+
+* **Framework:** Next.js 15 (App Router), React 19, TypeScript
+* **Styling & Motion:** Tailwind CSS v4, Motion, Lucide React
+
+```text
+.
+├── app/
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── Playground.tsx
+│   ├── mockData.ts
+│   └── agentic-ux/
+│       ├── AgentStateRenderer.tsx
+│       ├── AgentStatusBadge.tsx
+│       ├── ApprovalCard.tsx
+│       ├── ClarificationPanel.tsx
+│       ├── CompletedSummary.tsx
+│       ├── ErrorRecoveryPanel.tsx
+│       ├── ListeningVisualizer.tsx
+│       ├── ReasoningAccordion.tsx
+│       └── ToolCallWidget.tsx
+├── types.ts
+├── README.md
+├── README.ru.md
+└── package.json
+```
+
+*Note:* The repository is currently structured as a **reference implementation and interactive playground**, not as a published npm package (`"private": true`).
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- **Node.js**: `v20.x` or later
-- **npm**, **yarn**, or **pnpm**
-
-### Installation & Local Run
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/agentic-ui-kit.git
-   cd agentic-ui-kit
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the local development server:**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-4. **Lint and build:**
-   ```bash
-   npm run lint
-   npm run build
-   ```
-
----
-
-## 🛠️ Project Structure
-
-```text
-├── app/
-│   ├── layout.tsx                # Root layout with metadata and fonts
-│   ├── page.tsx                  # Application entry point
-│   └── globals.css               # Tailwind CSS v4 styles & dark mode variant
-├── components/
-│   ├── Playground.tsx            # Main interactive studio, matrix & documentation
-│   ├── mockData.ts               # Enterprise scenario definitions
-│   └── agentic-ux/
-│       ├── AgentStateRenderer.tsx    # State coordinator with AnimatePresence
-│       ├── AgentStatusBadge.tsx      # Pulse badge with phase-specific styles
-│       ├── ApprovalCard.tsx          # Human-in-the-Loop authorization card
-│       ├── ToolCallWidget.tsx        # MCP/API inspector with JSON copy & tabs
-│       ├── ReasoningAccordion.tsx    # Step-by-step reasoning plan viewer
-│       ├── ClarificationPanel.tsx    # Ambiguity selector with quick options
-│       ├── ListeningVisualizer.tsx   # Voice / streaming audio waveform
-│       ├── CompletedSummary.tsx      # Completion audit card with Undo action
-│       └── ErrorRecoveryPanel.tsx    # Diagnostic error panel with retry/abort
-├── types/
-│   └── index.ts                  # TypeScript types for FSM states & payloads
-├── README.md                     # English documentation (this file)
-├── README.ru.md                  # Russian documentation
-└── package.json
+```bash
+git clone https://github.com/stasdodesign/agentic-ui-kit.git
+cd agentic-ui-kit
+npm install
+npm run dev
 ```
 
----
-
-## 💻 Integration Example
-
-You can drop the `AgentStateRenderer` into any Next.js or React application:
-
-```tsx
-'use client';
-
-import React, { useState } from 'react';
-import { AgentStateRenderer } from '@/components/agentic-ux/AgentStateRenderer';
-import { AgentState, AgentAction } from '@/types';
-
-export function AgentWorkflowCard() {
-  const [state, setState] = useState<AgentState>('asking-confirmation');
-
-  const handleAction = (action: AgentAction) => {
-    switch (action.type) {
-      case 'APPROVE':
-        console.log('Action approved with payload:', action.payload);
-        setState('executing');
-        break;
-      case 'REJECT':
-        console.log('Action rejected by user');
-        setState('idle');
-        break;
-      case 'UNDO':
-        console.log('Atomic undo triggered');
-        setState('idle');
-        break;
-    }
-  };
-
-  return (
-    <AgentStateRenderer
-      state={state}
-      onAction={handleAction}
-      agentName="Atlas Production Agent"
-      agentRole="Autonomous Cloud Database Orchestrator"
-      showHeader={true}
-      payload={{
-        confirmation: {
-          actionTitle: 'Commit Schema Alteration & Drop Legacy Index',
-          riskLevel: 'critical',
-          details: 'Operation will acquire an exclusive table lock on billing_subscriptions for ~350ms.',
-          reversible: false,
-          affectedResource: 'aws-rds://production-primary.cluster/billing_subscriptions',
-          consequences: [
-            'Exclusive table lock for ~350ms',
-            'Permanent drop of index idx_subs_cycle_v1',
-          ],
-          payloadToExecute: { table: 'billing_subscriptions', dryRun: false },
-        },
-      }}
-    />
-  );
-}
-```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📱 How to Use the Interactive Playground
+## 👤 Author & Licensing
 
-1. **Choose a Scenario:** Use the top bar in the Interactive Studio to switch between 4 enterprise scenarios.
-2. **Switch States:** Click on any step in the 12-state breadcrumb bar (`idle`, `thinking`, `planning`, `tool-calling`, `asking-confirmation`, etc.) to inspect its UI presentation.
-3. **Auto-Run Workflow:** Click **«Auto-Run Workflow»** in the header to simulate end-to-end execution.
-4. **Human-in-the-Loop Actions:**
-   - In `clarifying`: Click suggestion chips or provide manual guidance.
-   - In `asking-confirmation`: Test **«Authorize & Commit»**, **«Reject & Abort»**, or click **«Edit Payload»** to modify parameters prior to execution.
-   - In `completed`: Test the **«Undo Action»** timer window.
-5. **Live Payload Editing:** Use the right-hand **State Payload (JSON)** panel to modify live parameters and observe instant reactive UI updates.
-6. **12-State Matrix & Architecture:** Switch tabs to view the complete 12-card design audit matrix or read the 4 Pillars of Agentic Transparency.
-
----
-
-## 👤 Author & Contacts
-
-- **Stanislav Dovidenko** — *Product Designer, Lead UX/UI Specialist for Agentic & Enterprise AI Systems*
-- **Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)
-- **Email:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)
-- **Live Demo (Vercel):** [https://agentic-ui-kit.vercel.app/](https://agentic-ui-kit.vercel.app/)
-- **In-App Profile:** Click the author pill in the footer or mobile menu to view full background and portfolio cases.
-
----
-
-## 💼 Custom Audit & Integration (CTA)
-
-> **Need a custom Agentic UX audit or integration for your B2B AI app? Contact me for a 20-min async Loom review.**
->
-> We will analyze your AI agent workflows, Chain of Thought (CoT) reasoning clarity, Human-in-the-Loop decision gates, and implement production-ready transparency standards that build user trust and reduce churn.
->
-> 📩 **Contact on Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)  
-> ✉️ **Send an Email:** [Stanislavskii.yo@gmail.com](mailto:Stanislavskii.yo@gmail.com)
-
----
-
-## 📄 License
-
-MIT License — free for commercial and educational use.
+* **Author:** Stanislav Dovidenko — Product Designer (AI Systems, Agentic UX, Enterprise SaaS)
+* **Portfolio:** [https://stanislavdovidenko.com/](https://stanislavdovidenko.com/)
+* **LinkedIn:** [https://www.linkedin.com/in/stasdodesign](https://www.linkedin.com/in/stasdodesign)
+* **Telegram:** [https://t.me/StasDoDesign](https://t.me/StasDoDesign)
+* **License:** Distributed under the **MIT License** (see `LICENSE`).

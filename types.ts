@@ -179,7 +179,7 @@ export const STATE_METADATA_REGISTRY: Record<AgentState, StateMetaInfo> = {
   },
   waiting: {
     state: 'waiting',
-    phase: 'cognition',
+    phase: 'action',
     title: 'Awaiting External Resource',
     description: 'Holding execution for webhook, rate-limit backoff, distributed lock, or upstream SLA.',
     humanInteraction: 'optional',
@@ -210,7 +210,7 @@ export const STATE_METADATA_REGISTRY: Record<AgentState, StateMetaInfo> = {
     title: 'Human-in-the-Loop Gate',
     description: 'Crucial gate requiring explicit authorization before executing high-risk or irreversible action.',
     humanInteraction: 'required',
-    reversibility: 'irreversible',
+    reversibility: 'conditional',
     uxObjective: 'Clear risk assessment, exact payload inspection, and explicit Approve/Reject controls.',
   },
   executing: {
